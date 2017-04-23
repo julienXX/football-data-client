@@ -1,16 +1,9 @@
-{-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE TypeOperators #-}
 
 module Competition where
 
 import Data.Aeson
-import Data.Proxy
 import GHC.Generics
-import Network.HTTP.Client (newManager, defaultManagerSettings)
-import Servant.API
-import Servant.Client
-
 
 data Competition = Competition
   { id :: Int
@@ -25,8 +18,6 @@ data Competition = Competition
   , _links :: Links
   } deriving (Show, Generic)
 
-instance FromJSON Competition
-
 data Links = Links
   { self :: Link
   , teams :: Link
@@ -34,10 +25,10 @@ data Links = Links
   , leagueTable :: Link
   } deriving (Show, Generic)
 
-instance FromJSON Links
-
 data Link = Link
   { href :: String
   } deriving (Show, Generic)
 
+instance FromJSON Competition
+instance FromJSON Links
 instance FromJSON Link

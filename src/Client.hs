@@ -1,12 +1,9 @@
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE TypeOperators #-}
 
 module Client where
 
-import Data.Aeson
 import Data.Proxy
-import GHC.Generics
 import Network.HTTP.Client (newManager, defaultManagerSettings)
 import Servant.API
 import Servant.Client
