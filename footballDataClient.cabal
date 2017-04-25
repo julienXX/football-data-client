@@ -19,6 +19,7 @@ library
                      , Competition
                      , Team
                      , Player
+                     , Fixture
   build-depends:       base >= 4.7 && < 5
                      , http-client
                      , servant

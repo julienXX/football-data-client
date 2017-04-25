@@ -11,6 +11,7 @@ import Servant.Client
 import Competition
 import Team
 import Player
+import Fixture
 
 
 type API =
@@ -18,6 +19,7 @@ type API =
   :<|> "competitions" :> Capture "id" Int :> Get '[JSON] Competition
   :<|> "teams" :> Capture "id" Int :> Get '[JSON] Team
   :<|> "teams" :> Capture "team_id" Int :> "players" :> Get '[JSON] TeamPlayers
+  :<|> "fixtures" :> Capture "id" Int :> Get '[JSON] Fixture
 
 baseUrl :: BaseUrl
 baseUrl = BaseUrl Http "api.football-data.org" 80 "/v1"
@@ -29,12 +31,13 @@ getCompetitions :: ClientM [Competition]
 getCompetition :: Int -> ClientM Competition
 getTeam :: Int -> ClientM Team
 getTeamPlayers :: Int -> ClientM TeamPlayers
-getCompetitions :<|> getCompetition :<|> getTeam :<|> getTeamPlayers = client footballDataApi
+getFixture :: Int -> ClientM Fixture
+getCompetitions :<|> getCompetition :<|> getTeam :<|> getTeamPlayers :<|> getFixture = client footballDataApi
 
 run :: Int -> IO ()
 run id = do
   m <- newManager defaultManagerSettings
-  res <- runClientM (getTeamPlayers id) (ClientEnv m baseUrl)
+  res <- runClientM (getFixture id) (ClientEnv m baseUrl)
   case res of
     Left err -> putStrLn $ "Error: " ++ show err
     Right object -> do
