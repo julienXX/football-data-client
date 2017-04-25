@@ -6,14 +6,14 @@ import Data.Aeson
 import Data.Aeson.Types
 import GHC.Generics
 
-data Fixture = Fixture
+data DetailedFixture = DetailedFixture
   { fixture :: DetailedFixture
   , head2head :: HeadToHead
   } deriving (Show, Generic)
 
-instance FromJSON Fixture
+instance FromJSON DetailedFixture
 
-data DetailedFixture = DetailedFixture
+data Fixture = Fixture
   { date :: String
   , status :: String
   , matchday :: Int
@@ -23,7 +23,7 @@ data DetailedFixture = DetailedFixture
   , _links :: Links
   } deriving (Show, Generic)
 
-instance FromJSON DetailedFixture
+instance FromJSON Fixture
 
 data FixtureResult = FixtureResult
   { goalsHomeTeam :: Int
