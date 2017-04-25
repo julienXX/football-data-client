@@ -26,8 +26,8 @@ data Fixture = Fixture
 instance FromJSON Fixture
 
 data FixtureResult = FixtureResult
-  { goalsHomeTeam :: Int
-  , goalsAwayTeam :: Int
+  { goalsHomeTeam :: Maybe Int
+  , goalsAwayTeam :: Maybe Int
   , halfTime :: Maybe DetailedGoals
   , extraTime :: Maybe DetailedGoals
   , penaltyShootout :: Maybe DetailedGoals

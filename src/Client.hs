@@ -13,12 +13,14 @@ import Team
 import Player
 import Fixture
 import CompetitionFixture
+import CompetitionTable
 
 
 type API =
        "competitions" :> Get '[JSON] [Competition]
   :<|> "competitions" :> Capture "id" Int :> Get '[JSON] Competition
   :<|> "competitions" :> Capture "competition_id" Int :> "fixtures" :> Get '[JSON] CompetitionFixtures
+  :<|> "competitions" :> Capture "competition_id" Int :> "leagueTable" :> Get '[JSON] CompetitionTable
   :<|> "teams" :> Capture "id" Int :> Get '[JSON] Team
   :<|> "teams" :> Capture "team_id" Int :> "players" :> Get '[JSON] TeamPlayers
   :<|> "fixtures" :> Capture "id" Int :> Get '[JSON] Fixture
@@ -32,16 +34,24 @@ footballDataApi = Proxy
 getCompetitions :: ClientM [Competition]
 getCompetition :: Int -> ClientM Competition
 getCompetitionFixtures :: Int -> ClientM CompetitionFixtures
+getCompetitionTable :: Int -> ClientM CompetitionTable
 getTeam :: Int -> ClientM Team
 getTeamPlayers :: Int -> ClientM TeamPlayers
 getFixture :: Int -> ClientM Fixture
-getCompetitions :<|> getCompetition :<|> getCompetitionFixtures :<|> getTeam :<|> getTeamPlayers :<|> getFixture = client footballDataApi
+getCompetitions
+  :<|> getCompetition
+  :<|> getCompetitionFixtures
+  :<|> getCompetitionTable
+  :<|> getTeam
+  :<|> getTeamPlayers
+  :<|> getFixture
+  = client footballDataApi
 
 run :: Int -> IO ()
 run id = do
   m <- newManager defaultManagerSettings
-  res <- runClientM (getCompetitionFixtures id) (ClientEnv m baseUrl)
+  res <- runClientM (getCompetitionTable id) (ClientEnv m baseUrl)
   case res of
     Left err -> putStrLn $ "Error: " ++ show err
     Right object -> do
-      print (head $ CompetitionFixture.fixtures $ object)
+      print object
