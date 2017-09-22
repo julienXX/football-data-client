@@ -17,13 +17,29 @@ import CompetitionTable
 
 
 type API =
-       "competitions" :> Get '[JSON] [Competition]
-  :<|> "competitions" :> Capture "id" Int :> Get '[JSON] Competition
-  :<|> "competitions" :> Capture "competition_id" Int :> "fixtures" :> Get '[JSON] CompetitionFixtures
-  :<|> "competitions" :> Capture "competition_id" Int :> "leagueTable" :> Get '[JSON] CompetitionTable
-  :<|> "teams" :> Capture "id" Int :> Get '[JSON] Team
-  :<|> "teams" :> Capture "team_id" Int :> "players" :> Get '[JSON] TeamPlayers
-  :<|> "fixtures" :> Capture "id" Int :> Get '[JSON] Fixture
+       "competitions"
+       :> Get '[JSON] [Competition]
+  :<|> "competitions"
+       :> Capture "id" Int
+       :> Get '[JSON] Competition
+  :<|> "competitions"
+       :> Capture "competition_id" Int
+       :> "fixtures"
+       :> Get '[JSON] CompetitionFixtures
+  :<|> "competitions"
+       :> Capture "competition_id" Int
+       :> "leagueTable"
+       :> Get '[JSON] CompetitionTable
+  :<|> "teams"
+       :> Capture "id" Int
+       :> Get '[JSON] Team
+  :<|> "teams"
+       :> Capture "team_id" Int
+       :> "players"
+       :> Get '[JSON] TeamPlayers
+  :<|> "fixtures"
+       :> Capture "id" Int
+       :> Get '[JSON] Fixture
 
 baseUrl :: BaseUrl
 baseUrl = BaseUrl Http "api.football-data.org" 80 "/v1"
@@ -47,11 +63,11 @@ getCompetitions
   :<|> getFixture
   = client footballDataApi
 
-run :: Int -> IO ()
-run id = do
-  m <- newManager defaultManagerSettings
-  res <- runClientM (getCompetitionTable id) (ClientEnv m baseUrl)
-  case res of
-    Left err -> putStrLn $ "Error: " ++ show err
-    Right object -> do
-      print object
+-- runQuery :: a -> Maybe Int -> IO ()
+-- runQuery query id = do
+--   m <- newManager defaultManagerSettings
+--   res <- runClientM (query id) (ClientEnv m baseUrl)
+--   case res of
+--     Left err -> putStrLn $ "Error: " ++ show err
+--     Right object -> do
+--       print object
